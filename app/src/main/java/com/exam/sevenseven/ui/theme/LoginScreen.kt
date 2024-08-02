@@ -21,8 +21,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.exam.sevenseven.R
 
 @Composable
 fun LoginScreen() {
@@ -39,7 +41,7 @@ fun LoginScreen() {
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Account Login"
+                text = stringResource(R.string.account_login)
             )
 
             OutlinedTextField(
@@ -47,9 +49,9 @@ fun LoginScreen() {
                 value = username.value,
                 onValueChange = { username.value = it },
                 leadingIcon = {
-                    Icon(Icons.Default.AccountCircle, contentDescription = "Username") },
+                    Icon(Icons.Default.AccountCircle, contentDescription = stringResource(R.string.username)) },
                 label = {
-                    Text(text = "Username",)
+                    Text(text = stringResource(R.string.account_login),)
                 }
             )
 
@@ -58,10 +60,10 @@ fun LoginScreen() {
                 value = password.value,
                 onValueChange = { password.value = it },
                 leadingIcon = {
-                    Icon(Icons.Default.Lock, contentDescription = "Password") },
+                    Icon(Icons.Default.Lock, contentDescription = stringResource(R.string.password)) },
                 visualTransformation = PasswordVisualTransformation(),
                 label = {
-                    Text(text = "Password")
+                    Text(text = stringResource(R.string.password))
                 }
             )
             
@@ -72,7 +74,7 @@ fun LoginScreen() {
                     Log.e("test", username.value)
                 }
             ) {
-                Text(text = "Login")
+                Text(text = stringResource(R.string.login))
             }
         }
     }
