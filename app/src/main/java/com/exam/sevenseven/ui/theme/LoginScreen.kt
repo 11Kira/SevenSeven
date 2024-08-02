@@ -51,7 +51,7 @@ fun LoginScreen() {
                 leadingIcon = {
                     Icon(Icons.Default.AccountCircle, contentDescription = stringResource(R.string.username)) },
                 label = {
-                    Text(text = stringResource(R.string.account_login),)
+                    Text(text = stringResource(R.string.username),)
                 }
             )
 
