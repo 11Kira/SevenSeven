@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,7 +60,11 @@ fun LoginScreen() {
                 value = username.value,
                 onValueChange = { username.value = it },
                 leadingIcon = {
-                    Icon(Icons.Default.AccountCircle, contentDescription = stringResource(R.string.username)) },
+                    Icon(
+                        Icons.Default.AccountCircle,
+                        contentDescription = stringResource(R.string.username),
+                        modifier = Modifier.height(20.dp).width(20.dp)
+                    ) },
                 label = {
                     Text(text = stringResource(R.string.username),)
                 }
@@ -69,14 +75,20 @@ fun LoginScreen() {
                 value = password.value,
                 onValueChange = { password.value = it },
                 leadingIcon = {
-                    Icon(Icons.Default.Lock, contentDescription = stringResource(R.string.password)) },
-                visualTransformation = PasswordVisualTransformation(),
+                    Icon(
+                        Icons.Default.Lock,
+                        contentDescription = stringResource(R.string.password),
+                        modifier = Modifier.height(20.dp).width(20.dp)
+                    ) },
+                visualTransformation = if (isPasswordHidden) {
+                    PasswordVisualTransformation()
+                } else VisualTransformation.None,
                 label = {
                     Text(text = stringResource(R.string.password))
                 },
                 trailingIcon = {
                     Icon(
-                        modifier = Modifier.height(25.dp).clickable(true) {
+                        modifier = Modifier.height(20.dp).clickable(true) {
                             isPasswordHidden = !isPasswordHidden
                         },
                         painter = if (isPasswordHidden) {
