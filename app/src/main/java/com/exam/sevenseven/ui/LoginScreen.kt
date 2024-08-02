@@ -1,4 +1,4 @@
-package com.exam.sevenseven.ui.theme
+package com.exam.sevenseven.ui
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -23,7 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.exam.sevenseven.R
 
 @Composable
@@ -41,11 +43,13 @@ fun LoginScreen() {
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.account_login)
+                text = stringResource(R.string.account_login),
+                textAlign = TextAlign.Center,
+                fontSize = 30.sp
             )
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
                 value = username.value,
                 onValueChange = { username.value = it },
                 leadingIcon = {
