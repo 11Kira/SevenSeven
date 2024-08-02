@@ -2,6 +2,7 @@ package com.exam.sevenseven.ui
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,10 +18,13 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +36,7 @@ import com.exam.sevenseven.R
 fun LoginScreen() {
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
+    var isPasswordHidden by remember { mutableStateOf(true) }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -68,7 +73,18 @@ fun LoginScreen() {
                 visualTransformation = PasswordVisualTransformation(),
                 label = {
                     Text(text = stringResource(R.string.password))
-                }
+                },
+                trailingIcon = {
+                    Icon(
+                        modifier = Modifier.height(25.dp).clickable(true) {
+                            isPasswordHidden = !isPasswordHidden
+                        },
+                        painter = if (isPasswordHidden) {
+                            painterResource(id = R.drawable.ic_invisible)
+                        } else painterResource(id = R.drawable.ic_visible),
+                        contentDescription = null
+                    )
+                },
             )
             
             Button(
