@@ -58,9 +58,9 @@ class LoginViewModel @Inject constructor(
         return isValid
     }
 
-    fun validateFields(username: String, password: String) {
+    fun validateFields(username: String, password: String, onLogin: () -> Unit) {
         if (validateUsername(username) && validatePassword(password)) {
-            // TODO Save details to data store and redirect to welcome page
+            onLogin.invoke()
         }
     }
 }

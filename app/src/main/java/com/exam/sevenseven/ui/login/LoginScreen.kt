@@ -40,6 +40,7 @@ lateinit var viewModel: LoginViewModel
 
 @Composable
 fun LoginScreen(
+    onLogin: () -> Unit
 ) {
     viewModel = hiltViewModel()
 
@@ -87,7 +88,9 @@ fun LoginScreen(
                     text = viewModel.usernameError.collectAsState().value,
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.Red,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 2.dp),
                     textAlign = TextAlign.Start
                 )
             }
@@ -132,7 +135,9 @@ fun LoginScreen(
                     text = viewModel.passwordError.collectAsState().value,
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.Red,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 2.dp),
                     textAlign = TextAlign.Start
                 )
             }
@@ -144,7 +149,7 @@ fun LoginScreen(
                     .padding(top = 20.dp)
                     .height(50.dp),
                 onClick = {
-                    viewModel.validateFields(usernameInput.value, passwordInput.value)
+                    viewModel.validateFields(usernameInput.value, passwordInput.value, onLogin)
                 }
             ) {
                 Text(text = stringResource(R.string.login))

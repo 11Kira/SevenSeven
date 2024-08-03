@@ -20,7 +20,9 @@ import androidx.compose.ui.unit.sp
 import com.exam.sevenseven.R
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    onLogout: () -> Unit
+) {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)){
@@ -39,7 +41,7 @@ fun WelcomeScreen() {
                 shape = RoundedCornerShape(40),
                 modifier = Modifier.fillMaxWidth().padding(top = 20.dp).height(50.dp),
                 onClick = {
-
+                    onLogout.invoke()
                 }
             ) {
                 Text(text = stringResource(R.string.logout))
