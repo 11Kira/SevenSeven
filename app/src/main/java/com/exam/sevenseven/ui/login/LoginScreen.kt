@@ -1,4 +1,4 @@
-package com.exam.sevenseven.ui
+package com.exam.sevenseven.ui.login
 
 import android.util.Log
 import androidx.compose.foundation.background
