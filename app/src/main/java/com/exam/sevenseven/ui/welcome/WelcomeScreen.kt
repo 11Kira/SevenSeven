@@ -17,12 +17,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.exam.sevenseven.R
+
+lateinit var viewModel: WelcomeViewModel
 
 @Composable
 fun WelcomeScreen(
     onLogout: () -> Unit
 ) {
+    viewModel = hiltViewModel()
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)){
@@ -41,7 +45,7 @@ fun WelcomeScreen(
                 shape = RoundedCornerShape(40),
                 modifier = Modifier.fillMaxWidth().padding(top = 20.dp).height(50.dp),
                 onClick = {
-                    onLogout.invoke()
+                    viewModel.logoutUser(onLogout)
                 }
             ) {
                 Text(text = stringResource(R.string.logout))

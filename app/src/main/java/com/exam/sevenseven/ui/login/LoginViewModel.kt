@@ -2,11 +2,16 @@ package com.exam.sevenseven.ui.login
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.exam.sevenseven.R
+import com.exam.sevenseven.user.UserPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,8 +64,13 @@ class LoginViewModel @Inject constructor(
     }
 
     fun validateFields(username: String, password: String, onLogin: () -> Unit) {
-        if (validateUsername(username) && validatePassword(password)) {
-            onLogin.invoke()
+        viewModelScope.launch(Dispatchers.IO ) {
+            if (validateUsername(username) && validatePassword(password)) {
+                UserPrefs(context).setUserLogin(true)
+                withContext(Dispatchers.Main) {
+                    onLogin.invoke()
+                }
+            }
         }
     }
 }
