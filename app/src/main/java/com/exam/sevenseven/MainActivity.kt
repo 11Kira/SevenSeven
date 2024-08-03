@@ -1,7 +1,6 @@
 package com.exam.sevenseven
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -27,7 +26,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    var isUserLoggedIn: Boolean = false
+    private var isUserLoggedIn: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +54,6 @@ fun MainScreenView(isUserLoggedIn: Boolean) {
 
 @Composable
 fun NavigationGraph(navController: NavHostController, isUserLoggedIn: Boolean) {
-    Log.e("testLogin", isUserLoggedIn.toString())
     NavHost(
         navController = navController,
         startDestination = if (isUserLoggedIn) {
@@ -67,14 +65,18 @@ fun NavigationGraph(navController: NavHostController, isUserLoggedIn: Boolean) {
         composable(NavigationItem.Login.screenRoute) {
             LoginScreen(
                 onLogin = {
-                    navController.navigate(NavigationItem.Welcome.screenRoute)
+                    navController.navigate(NavigationItem.Welcome.screenRoute) {
+                        popUpTo(0)
+                    }
                 }
             )
         }
         composable(NavigationItem.Welcome.screenRoute) {
             WelcomeScreen(
                 onLogout = {
-                    navController.navigate(NavigationItem.Login.screenRoute)
+                    navController.navigate(NavigationItem.Login.screenRoute) {
+                        popUpTo(0)
+                    }
                 }
             )
         }
