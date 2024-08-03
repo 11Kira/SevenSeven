@@ -1,6 +1,5 @@
-package com.exam.sevenseven.ui
+package com.exam.sevenseven.ui.login
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,7 +17,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,12 +33,18 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.exam.sevenseven.R
 
+lateinit var viewModel: LoginViewModel
+
 @Composable
-fun LoginScreen() {
-    val username = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
+fun LoginScreen(
+) {
+    viewModel = hiltViewModel()
+
+    val usernameInput = remember { mutableStateOf("") }
+    val passwordInput = remember { mutableStateOf("") }
     var isPasswordHidden by remember { mutableStateOf(true) }
 
     Box(modifier = Modifier
@@ -56,29 +63,48 @@ fun LoginScreen() {
             )
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
-                value = username.value,
-                onValueChange = { username.value = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp),
+                value = usernameInput.value,
+                onValueChange = { usernameInput.value = it },
                 leadingIcon = {
                     Icon(
                         Icons.Default.AccountCircle,
                         contentDescription = stringResource(R.string.username),
-                        modifier = Modifier.height(20.dp).width(20.dp)
+                        modifier = Modifier
+                            .height(20.dp)
+                            .width(20.dp)
                     ) },
                 label = {
-                    Text(text = stringResource(R.string.username),)
-                }
+                    Text(text = stringResource(R.string.username))
+                },
+                isError = viewModel.usernameError.collectAsState().value.isNotEmpty()
             )
 
+            if (viewModel.usernameError.collectAsState().value.isNotEmpty()) {
+                Text(
+                    text = viewModel.usernameError.collectAsState().value,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.Red,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp),
+                    textAlign = TextAlign.Start
+                )
+            }
+
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(top = 5.dp),
-                value = password.value,
-                onValueChange = { password.value = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp),
+                value = passwordInput.value,
+                onValueChange = { passwordInput.value = it },
                 leadingIcon = {
                     Icon(
                         Icons.Default.Lock,
                         contentDescription = stringResource(R.string.password),
-                        modifier = Modifier.height(20.dp).width(20.dp)
+                        modifier = Modifier
+                            .height(20.dp)
+                            .width(20.dp)
                     ) },
                 visualTransformation = if (isPasswordHidden) {
                     PasswordVisualTransformation()
@@ -88,22 +114,37 @@ fun LoginScreen() {
                 },
                 trailingIcon = {
                     Icon(
-                        modifier = Modifier.height(20.dp).clickable(true) {
-                            isPasswordHidden = !isPasswordHidden
-                        },
+                        modifier = Modifier
+                            .height(20.dp)
+                            .clickable(true) {
+                                isPasswordHidden = !isPasswordHidden
+                            },
                         painter = if (isPasswordHidden) {
-                            painterResource(id = R.drawable.ic_invisible)
-                        } else painterResource(id = R.drawable.ic_visible),
+                            painterResource(id = R.drawable.ic_visible)
+                        } else painterResource(id = R.drawable.ic_invisible),
                         contentDescription = null
                     )
                 },
+                isError = viewModel.passwordError.collectAsState().value.isNotEmpty()
             )
+            if (viewModel.passwordError.collectAsState().value.isNotEmpty()) {
+                Text(
+                    text = viewModel.passwordError.collectAsState().value,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.Red,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp),
+                    textAlign = TextAlign.Start
+                )
+            }
             
             Button(
                 shape = RoundedCornerShape(40),
-                modifier = Modifier.fillMaxWidth().padding(top = 20.dp).height(50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp)
+                    .height(50.dp),
                 onClick = {
-                    Log.e("test", username.value)
+                    viewModel.validateFields(usernameInput.value, passwordInput.value)
                 }
             ) {
                 Text(text = stringResource(R.string.login))

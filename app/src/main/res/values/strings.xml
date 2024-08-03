@@ -6,4 +6,8 @@
     <string name="logout">Logout</string>
     <string name="account_login">Account Login</string>
     <string name="welcome">Welcome</string>
+    <string name="enter_password">Please enter password</string>
+    <string name="password_length_error">Password should be more than 6 characters</string>
+    <string name="username_should_not_be_empty">Username field should not be empty</string>
+    <string name="username_length_error">Username should be more than 6 characters</string>
 </resources>
