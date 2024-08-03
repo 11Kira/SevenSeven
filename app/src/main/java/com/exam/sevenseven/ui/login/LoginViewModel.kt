@@ -60,7 +60,7 @@ class LoginViewModel @Inject constructor(
 
     fun validateFields(username: String, password: String) {
         if (validateUsername(username) && validatePassword(password)) {
-            // Redirect to welcome page
+            // TODO Save details to data store and redirect to welcome page
         }
     }
 }
