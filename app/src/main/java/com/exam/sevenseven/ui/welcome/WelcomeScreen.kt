@@ -36,7 +36,7 @@ fun WelcomeScreen(
 
             Text(
                 modifier = Modifier.fillMaxWidth().padding(50.dp),
-                text = stringResource(R.string.welcome),
+                text = stringResource(R.string.welcome, viewModel.getUsername()),
                 textAlign = TextAlign.Center,
                 fontSize = 50.sp
             )

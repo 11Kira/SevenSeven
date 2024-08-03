@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.exam.sevenseven.R
+import com.exam.sevenseven.user.UserCredential
 import com.exam.sevenseven.user.UserPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -63,10 +64,13 @@ class LoginViewModel @Inject constructor(
         return isValid
     }
 
-    fun validateFields(username: String, password: String, onLogin: () -> Unit) {
+    fun validateFields(userCredential: UserCredential, onLogin: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO ) {
-            if (validateUsername(username) && validatePassword(password)) {
-                UserPrefs(context).setUserLogin(true)
+            if (validateUsername(userCredential.username) && validatePassword(userCredential.password)) {
+                UserPrefs(context).apply {
+                    setUserLogin(true)
+                    setUsername(userCredential.username)
+                }
                 withContext(Dispatchers.Main) {
                     onLogin.invoke()
                 }
