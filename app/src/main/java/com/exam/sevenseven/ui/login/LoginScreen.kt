@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.exam.sevenseven.R
+import com.exam.sevenseven.user.UserCredential
 
 lateinit var viewModel: LoginViewModel
 
@@ -149,7 +150,8 @@ fun LoginScreen(
                     .padding(top = 20.dp)
                     .height(50.dp),
                 onClick = {
-                    viewModel.validateFields(usernameInput.value, passwordInput.value, onLogin)
+                    val user = UserCredential(usernameInput.value, passwordInput.value)
+                    viewModel.validateFields(user, onLogin)
                 }
             ) {
                 Text(text = stringResource(R.string.login))

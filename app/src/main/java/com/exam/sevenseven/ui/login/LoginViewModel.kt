@@ -2,11 +2,17 @@ package com.exam.sevenseven.ui.login
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.exam.sevenseven.R
+import com.exam.sevenseven.user.UserCredential
+import com.exam.sevenseven.user.UserPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,6 +45,9 @@ class LoginViewModel @Inject constructor(
         } else if (username.length < 5) {
             errorMessage = context.getString(R.string.username_length_error)
             isValid = false
+        } else if (username.contains(" ")) {
+            errorMessage = context.getString(R.string.white_space_error)
+            isValid = false
         }
         setUsernameError(errorMessage)
         return isValid
@@ -53,14 +62,25 @@ class LoginViewModel @Inject constructor(
         } else if (password.length < 5) {
             errorMessage = context.getString(R.string.password_length_error)
             isValid = false
+        } else if (password.contains(" ")) {
+            errorMessage = context.getString(R.string.white_space_error)
+            isValid = false
         }
         setPasswordError(errorMessage)
         return isValid
     }
 
-    fun validateFields(username: String, password: String, onLogin: () -> Unit) {
-        if (validateUsername(username) && validatePassword(password)) {
-            onLogin.invoke()
+    fun validateFields(userCredential: UserCredential, onLogin: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO ) {
+            if (validateUsername(userCredential.username) && validatePassword(userCredential.password)) {
+                UserPrefs(context).apply {
+                    setUserLogin(true)
+                    setUsername(userCredential.username)
+                }
+                withContext(Dispatchers.Main) {
+                    onLogin.invoke()
+                }
+            }
         }
     }
 }
