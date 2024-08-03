@@ -45,6 +45,9 @@ class LoginViewModel @Inject constructor(
         } else if (username.length < 5) {
             errorMessage = context.getString(R.string.username_length_error)
             isValid = false
+        } else if (username.contains(" ")) {
+            errorMessage = context.getString(R.string.white_space_error)
+            isValid = false
         }
         setUsernameError(errorMessage)
         return isValid
@@ -58,6 +61,9 @@ class LoginViewModel @Inject constructor(
             isValid = false
         } else if (password.length < 5) {
             errorMessage = context.getString(R.string.password_length_error)
+            isValid = false
+        } else if (password.contains(" ")) {
+            errorMessage = context.getString(R.string.white_space_error)
             isValid = false
         }
         setPasswordError(errorMessage)
